@@ -3,6 +3,7 @@ import datetime
 from pyfiglet import Figlet
 import os
 from utils import Utils
+from persistence import Persistence
 
 f = Figlet(font='3-d')
 
@@ -12,7 +13,6 @@ class ConsoleInterface:
     def __init__(self, tasks : list):
         self.tasks = tasks
 
-    @property
     def showDetailedTask(self, task_array_id : int):
 
         task_array_id-=1
@@ -24,14 +24,16 @@ class ConsoleInterface:
         print("Categoria da tarefa: {}".format(task.category))
         print("Descrição da tarefa: {}".format(task.description))
         print("Data limite da tarefa: {}".format(date.strftime(task.deadline, "%d/%m/%Y, %H:%M:%S")))
-        print("Feita: {}".format(task.done))
+        print("Feita: {}".format("Sim" if task.done == True else "Não"))
         print("----------------------------")
         print("O que deseja fazer nesta tarefa? ")
         print("----------------------------")
         print("1 - Marcar como concluída")
         print("2 - Deletar tarefa")
         print("3 - Adiar ou adiantar tarefa")
+        print("4 - Voltar ao menu de tarefas")
         print("----------------------------")
+        
 
         while True:
             try:
@@ -43,6 +45,8 @@ class ConsoleInterface:
                     break
                 elif option == 2:
                     del self.tasks[task_array_id]
+                    persistence = Persistence(self.tasks)
+                    persistence.insertTasks()
                     print("Tarefa deletada!")
                     self.returnToOptionsPanel()
                     break
@@ -50,6 +54,9 @@ class ConsoleInterface:
                     self.tasks[task_array_id].deadline = date.strptime(str(input("Digite a data para conclusão da tarefa(Formato DD/MM/AAAA HH:MM): ")), "%d/%m/%Y %H:%M")
                     print("Tarefa alterada!")
                     self.returnToOptionsPanel()
+                    break
+                elif option == 4:
+                    self.showTasks()
                     break
                 else: 
                     print("Digite uma opção válida!")
@@ -69,7 +76,7 @@ class ConsoleInterface:
             task_array_id : int = index + 1
             task_label : str = task.label
             task_deadline : str = date.strftime(task.deadline, "%d/%m/%Y, %H:%M:%S")
-            task_done : str = task.done if "Sim" else "Não"
+            task_done : str = "Sim" if task.done == True else "Não"
             print("----------------------------")
             print("ID - NOME DA TAREFA - DATA PARA CONCLUSÃO - CONCLUÍDA")
             print("{} - {} - {} - {}".format(task_array_id, task_label, task_deadline,task_done))
@@ -131,6 +138,9 @@ class ConsoleInterface:
         
         new_task : Task = Task(label, description, category, deadline_converted, False, False)
         self.tasks.append(new_task)
+        
+        persistence = Persistence(self.tasks)
+        persistence.insertTasks()
 
         print("Tarefa criada!")
         self.returnToOptionsPanel()

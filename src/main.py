@@ -1,11 +1,15 @@
 import datetime
 from console_interface import ConsoleInterface
 from task_monitor import TaskMonitor
+from persistence import Persistence
 import threading
 
 date = datetime.datetime
 
 tasks : list = []
+
+persistence = Persistence(tasks)
+persistence.getAllTasks()
 
 console_interface = ConsoleInterface(tasks)
 
