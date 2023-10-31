@@ -6,6 +6,8 @@ from tkinter import messagebox
 
 date = datetime.datetime
 
+from persistence import Persistence
+
 class TaskMonitor:
     def __init__(self, tasks : list):
         self.tasks = tasks
@@ -29,4 +31,8 @@ class TaskMonitor:
                                 if diff <= 0:
                                     self.showTaskScheduleAlert(task.label, task.description, task.deadline)
                                     tasks[index].deadline_marked = True
+
+                                    persistence = Persistence(self.tasks)
+                                    persistence.insertTasks()
+
                                     break
