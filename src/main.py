@@ -1,5 +1,4 @@
 import datetime
-from task import Task
 from console_interface import ConsoleInterface
 from task_monitor import TaskMonitor
 import threading
@@ -17,4 +16,3 @@ thread_monitor = threading.Thread(target=task_monitor.monitor)
 
 thread_menu.start()
 thread_monitor.start()
-
