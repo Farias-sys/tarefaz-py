@@ -22,7 +22,7 @@ class TaskMonitor:
                 for index in range(0, len(tasks)):
                     task : Task = tasks[index]
                     task_deadline : datetime = task.deadline
-                    task_done : bool = task.done
+                    task_done : bool = task.deadline_marked
                     if(task_done==False):
                         while True:
                             current_datetime : datetime = date.now()

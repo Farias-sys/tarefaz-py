@@ -6,17 +6,17 @@ import threading
 
 date = datetime.datetime
 
-tasks : list = []
+if __name__ == '__main__':
+    tasks : list = []
 
-persistence = Persistence(tasks)
-persistence.getAllTasks()
+    persistence = Persistence(tasks)
+    persistence.getAllTasks()
 
-console_interface = ConsoleInterface(tasks)
+    console_interface = ConsoleInterface(tasks)
+    task_monitor = TaskMonitor(tasks)
 
-task_monitor = TaskMonitor(tasks)
+    thread_monitor = threading.Thread(target=task_monitor.monitor)
+    thread_menu = threading.Thread(target=console_interface.optionsPanel)
 
-thread_menu = threading.Thread(target=console_interface.optionsPanel)
-thread_monitor = threading.Thread(target=task_monitor.monitor)
-
-thread_menu.start()
-thread_monitor.start()
+    thread_monitor.start()
+    thread_menu.start()
