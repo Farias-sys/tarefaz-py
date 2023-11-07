@@ -6,8 +6,9 @@ import threading
 
 date = datetime.datetime
 
+tasks : list = []
+
 if __name__ == '__main__':
-    tasks : list = []
 
     persistence = Persistence(tasks)
     persistence.getAllTasks()
